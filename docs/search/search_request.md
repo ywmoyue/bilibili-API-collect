@@ -4,11 +4,13 @@
 
 ## 综合搜索（web端）
 
-> https://api.bilibili.com/x/web-interface/search/all/v2
+> https://api.bilibili.com/x/web-interface/wbi/search/all/v2
+
+> ~~https://api.bilibili.com/x/web-interface/search/all/v2~~ （旧链接）
 
 *方式：GET*
 
-认证方式：Cookie（SESSDATA）
+鉴权方式：[Wbi 签名](../misc/sign/wbi.md), Cookie 中含有 [`buvid3`](../misc/buvid3_4.md) 字段
 
 返回和关键字相关的20条信息
 
@@ -37,7 +39,7 @@
 | ---------------- | ----- | ---------------- | ---------------- |
 | seid             | str   | 搜索id           |                  |
 | page             | num   | 页数             | 固定为1          |
-| pagesize         | num   | 每页条数         | 固定为20         |
+| page_size         | num   | 每页条数         | 固定为20         |
 | numResults       | num   | 总条数           | 最大值为1000     |
 | numPages         | num   | 分页数           | 最大值为50       |
 | suggest_keyword  | str   | 空               | **作用尚不明确** |
@@ -575,15 +577,15 @@ curl -G 'https://api.bilibili.com/x/web-interface/search/all/v2' \
 
 </details>
 
-
-
 ## 分类搜索（web端）
 
-> https://api.bilibili.com/x/web-interface/search/type
+> https://api.bilibili.com/x/web-interface/wbi/search/type
+
+> ~~https://api.bilibili.com/x/web-interface/search/type~~ （旧链接）
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+鉴权方式：[Wbi 签名](../misc/sign/wbi.md), Cookie 中含有 [`buvid3`](../misc/buvid3_4.md) 字段, Referer 在 `.bilibili.com` 下, User-Agent 不含敏感子串
 
 根据关键词进行搜索，返回结果每页20项
 
@@ -607,7 +609,7 @@ curl -G 'https://api.bilibili.com/x/web-interface/search/all/v2' \
 
 | 字段    | 类型 | 内容     | 备注                        |
 | ------- | ---- | -------- | --------------------------- |
-| code    | num  | 返回值   | 0：成功<br />-400：请求错误<br/>-412：请求被拦截 |
+| code    | num  | 返回值   | 0: 成功<br />-400: 请求错误<br/>-412: 请求被拦截<br />-1200: 被降级过滤的请求(搜索目标类型不存在) |
 | message | str  | 错误信息 | 默认为0                     |
 | ttl     | num  | 1        |                             |
 | data    | obj  | 信息本体 |                             |

@@ -8,11 +8,14 @@
 
 > https://api.bilibili.com/x/v2/dm/web/seg.so （web端）
 >
+> https://api.bilibili.com/x/v2/dm/wbi/web/seg.so （web 端新接口，需要 wbi 认证）
+>
 > https://api.bilibili.com/x/v2/dm/list/seg.so （APP端）
 >
 > https://i0.hdslb.com/bfs/dm/{data}.bin （BAS/代码弹幕专包）
 
 *请求方式：GET*
+*认证方式：半匿名（部分视频在无 Cookie: SESSDATA 时只返回部分弹幕）*
 
 此接口与漫画弹幕相同
 

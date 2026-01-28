@@ -39,6 +39,8 @@
 | ------ | ----- | ------------ | ---- |
 | info   | obj   | 收藏夹元数据 |      |
 | medias | array | 收藏夹内容   |      |
+| has_more | bool | 收藏夹是否有下一页   |      |
+| ttl | num | 接口返回时间  |    时间戳  |
 
 `data`中的`info`对象：
 
@@ -103,7 +105,7 @@
 | page     | num  | 视频分P数     |                                                              |
 | duration | num  | 音频/视频时长 |                                                              |
 | upper    | obj  | UP主信息      |                                                              |
-| attr     | num  | 属性位（？）  |                                                              |
+| attr     | num  | 失效  | 0: 正常；9: up自己删除；1: 其他原因删除                                                         |
 | cnt_info | obj  | 状态数        |                                                              |
 | link     | str  | 跳转uri       |                                                              |
 | ctime    | num  | 投稿时间      | 时间戳                                                       |
@@ -319,7 +321,8 @@ curl -G 'https://api.bilibili.com/x/v3/fav/resource/list' \
                 "season": null
             }
         ],
-        "has_more": true
+        "has_more": true,
+        "ttl": 1703349018
     }
 }
 ```
@@ -353,15 +356,7 @@ curl -G 'https://api.bilibili.com/x/v3/fav/resource/list' \
 | message | str                             | 错误信息   | 默认为0                                             |
 | data    | 有效时：array<br />无效或：null | 内容id列表 |                                                     |
 
-`data`中的`medias`数组：
-
-| 项   | 类型 | 内容            | 备注 |
-| ---- | ---- | --------------- | ---- |
-| 0    | obj  | 收藏内容id1     |      |
-| n    | obj  | 收藏内容id(n+1) |      |
-| ...  | obj  | ...             |      |
-
-`medias`数组中的对象：
+`data`数组中的对象：
 
 | 字段  | 类型 | 内容         | 备注                                                         |
 | ----- | ---- | ------------ | ------------------------------------------------------------ |

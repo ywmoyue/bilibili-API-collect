@@ -10,6 +10,8 @@
 
 注：`max`、`business`、`view_at`参数用于历史记录列表的 IFS (无限滚动)，其用法类似链表的 next 指针
 
+本接口也可以返回已失效稿件的信息
+
 **url参数：**
 
 | 参数名   | 类型 | 内容                     | 必要性 | 备注                                                         |
@@ -118,7 +120,7 @@
 | cid      | num  | 观看到的对象id        | 稿件视频&剧集（当`business=archive`或`business=pgc`时）：视频cid<br />文集（当`business=article-list`时）：文章cvid |
 | part     | str  | 观看到的视频分 P 标题 | 仅用于稿件视频                                               |
 | business | str  | 业务类型              | **见请求参数**                                               |
-| dt       | num  | 记录查看的平台代码    | 1 3 5 7：手机端<br />2：web端<br />4 6：pad端<br />33：TV端<br />0：其他 |
+| dt       | num  | 记录查看的平台代码    | 1 3 5 7：手机端<br />2：web端<br />4 6：pad端<br />9: 智能音箱/游戏机33：TV端<br />0：其他 |
 
 **示例：**
 
@@ -349,6 +351,8 @@ curl -G 'https://api.bilibili.com/x/web-interface/history/cursor' \
 
 认证方式：Cookie (SESSDATA)
 
+本接口也可以返回已失效稿件的信息
+
 **url参数：**
 
 | 参数名 | 类型 | 内容     | 必要性 | 备注    |
@@ -383,21 +387,21 @@ curl -G 'https://api.bilibili.com/x/web-interface/history/cursor' \
 | videos                          | num     | 视频分P总数                    | 默认为1                                                      |
 | tid                             | num     | 分区tid                        |                                                              |
 | tname                           | str     | 子分区名称                     |                                                              |
-| copyright                       | num     | 是否转载                       | 1：原创<br />2：转载                                         |
+| copyright                       | num     | 是否转载                       | 1：原创<br />2：转载<br />3：未填写                            |
 | pic                             | str     | 视频封面图片url                |                                                              |
 | title                           | str     | 稿件标题                       |                                                              |
 | pubdate                         | num     | 稿件发布时间                   | 时间戳                                                       |
 | ctime                           | num     | 用户提交稿件的时间             | 时间戳                                                       |
 | desc                            | str     | 视频简介                       |                                                              |
-| state                           | num     | 视频状态                       | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`state`备注 |
-| ~~attribute~~（仅做历史性保留） | ~~num~~ | ~~稿件属性位配置~~             | 本字段已被删除<br />~~略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`attribute`备注~~ |
+| state                           | num     | 视频状态                       | 略，见[获取视频详细信息（web端）](../video/info.md#获取视频详细信息（web端）)中的`state`备注 |
+| ~~attribute~~（仅做历史性保留） | ~~num~~ | ~~稿件属性位配置~~             | 本字段已被删除<br />~~略，见[获取视频详细信息（web端）](../video/info.md#获取视频详细信息（web端）)中的`attribute`备注~~ |
 | duration                        | num     | 视频总计持续时长（所有分P）    | 单位为秒                                                     |
-| rights                          | obj     | 视频属性标志                   | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`rights`对象 |
-| owner                           | obj     | 视频UP主信息                   | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`owner`对象 |
-| stat                            | obj     | 视频状态数                     | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`stat`对象 |
+| rights                          | obj     | 视频属性标志                   | 略，见[获取视频详细信息（web端）](../video/info.md#获取视频详细信息（web端）)中的`rights`对象 |
+| owner                           | obj     | 视频UP主信息                   | 略，见[获取视频详细信息（web端）](../video/info.md#获取视频详细信息（web端）)中的`owner`对象 |
+| stat                            | obj     | 视频状态数                     | 略，见[获取视频详细信息（web端）](../video/info.md#获取视频详细信息（web端）)中的`stat`对象 |
 | dynamic                         | str     | 视频同步发布的的动态的文字内容 | 无为空                                                       |
 | cid                             | num     | 视频1P cid                     |                                                              |
-| dimension                       | obj     | 视频1P分辨率                   | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`dimension`对象 |
+| dimension                       | obj     | 视频1P分辨率                   | 略，见[获取视频详细信息（web端）](../video/info.md#获取视频详细信息（web端）)中的`dimension`对象 |
 | bangumi                         | obj     | 番剧/影视信息                  | 非番剧/影视无此项                                            |
 | cheese                          | obj     | 课程信息                       | 非课程无此项                                                 |
 | favorite                        | bool    | 是否已收藏                     | true：已收藏<br />false：未收藏                              |

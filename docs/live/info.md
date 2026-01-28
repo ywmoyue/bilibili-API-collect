@@ -92,7 +92,7 @@
 
 | 字段       | 类型  | 内容  | 备注                                        |
 |----------|-----|-----|-------------------------------------------|
-| name     | str | 类型  | v_person: 个人认证(黄) <br> v_company: 企业认证(蓝) |
+| name     | str | 类型  | v_person: 个人认证(黄) <br /> v_company: 企业认证(蓝) |
 | position | num | 位置  |                                           |
 | value    | str | 值   |                                           |
 | desc     | str | 描述  |                                           |
@@ -466,7 +466,7 @@ curl -G 'https://api.live.bilibili.com/room/v1/Room/room_init' \
 
 **示例：**
 
-查询直播间`mid=76`的主播信息
+查询直播间`mid=2`的主播信息
 
 ```shell
 curl -G 'https://api.live.bilibili.com/live_user/v1/Master/info' \
@@ -523,6 +523,146 @@ curl -G 'https://api.live.bilibili.com/live_user/v1/Master/info' \
 
 </details>
 
+## 获取直播间基本信息
+
+> https://api.live.bilibili.com/xlive/web-room/v1/index/getRoomBaseInfo
+
+*请求方式: GET*
+
+注: 亦可用于批量获取
+
+<!--{
+  "gh": [745]
+}-->
+
+**URL参数:**
+
+| 参数名 | 类型 | 内容 | 必要性 | 备注 |
+| ----- | ---- | --- | - | - |
+| req_biz | str | `web_room_componet` | 必要 | |
+| room_ids | num | 直播间短ID | 不必要 | 多个重复该参数即可 |
+
+**JSON回复:**
+
+根对象:
+
+| 字段 | 类型 | 内容 | 备注 |
+| --- | --- | --- | --- |
+| code | num | 返回值 | 0: 成功<br />-400: 请求错误 |
+| message | str | 错误信息 | 默认为 0 |
+| ttl | num | 1 | |
+| data | obj | 信息本体 | |
+
+`data`对象:
+
+| 字段 | 类型 | 内容 | 备注 |
+| --- | --- | --- | --- |
+| by_uids | obj | 空 |  |
+| by_room_ids | obj | 直播间信息 |  |
+
+`data`中的`by_room_ids`对象:
+
+以直播间长ID为键, 直播间信息为值的, 按键名降序排序
+
+`by_room_ids`中的值对象:
+
+| 字段 | 类型 | 内容 | 备注 |
+| --- | --- | --- | --- |
+| room_id | num | 直播间长ID |  |
+| uid | num | 主播用户mid |  |
+| area_id | num | 直播间分区ID |  |
+| live_status | num | 直播状态 | 0: 未开播<br />1: 直播中<br />2: 轮播中 |
+| live_url | str | 直播间网页url |  |
+| parent_area_id | num | 直播间父分区ID |  |
+| title | str | 直播间标题 |  |
+| parent_area_name | str | 直播间父分区名称 |  |
+| area_name | str | 直播间分区名称 |  |
+| live_time | str | 开播时间 | `yyyy-MM-dd HH:mm:ss` |
+| description | str | 直播间简介 |  |
+| tags | str | 直播间标签 | 以 `,` 分隔 |
+| attention | num | 关注数 |  |
+| online | num | 在线人数 |  |
+| short_id | num | 直播间短ID | 为0是无短号 |
+| uname | str | 主播用户名 |  |
+| cover | str | 直播间封面url |  |
+| background | str | 直播间背景url |  |
+| join_slide | num | 1 |  |
+| live_id | num | 0 |  |
+| live_id_str | str | "0" |  |
+
+**示例:**
+
+```shell
+curl -G 'https://api.live.bilibili.com/xlive/web-room/v1/index/getRoomBaseInfo' \
+--url-query 'req_biz=web_room_componet' \
+--url-query 'room_ids=1' \
+--url-query 'room_ids=3
+```
+
+<details>
+<summary>查看响应示例:</summary>
+
+```json
+{
+  "code": 0,
+  "message": "0",
+  "ttl": 1,
+  "data": {
+    "by_uids": {},
+    "by_room_ids": {
+      "23058": {
+        "room_id": 23058,
+        "uid": 11153765,
+        "area_id": 190,
+        "live_status": 0,
+        "live_url": "https://live.bilibili.com/23058",
+        "parent_area_id": 5,
+        "title": "哔哩哔哩音悦台",
+        "parent_area_name": "电台",
+        "area_name": "唱见电台",
+        "live_time": "0000-00-00 00:00:00",
+        "description": "<p>这里是哔哩哔哩官方音乐台喔！</p><p>一起来听音乐吧ε=ε=(ノ≧∇≦)ノ</p><p>没想到蒸汽配圣诞下装，意外的很暴露呢=3=</p>\n",
+        "tags": "",
+        "attention": 225431,
+        "online": 0,
+        "short_id": 3,
+        "uname": "3号直播间",
+        "cover": "",
+        "background": "https://i0.hdslb.com/bfs/live/2836bb7b84c792e2c6aadfd4d1cce13484775fa3.jpg",
+        "join_slide": 1,
+        "live_id": 0,
+        "live_id_str": "0"
+      },
+      "5440": {
+        "room_id": 5440,
+        "uid": 9617619,
+        "area_id": 701,
+        "live_status": 2,
+        "live_url": "https://live.bilibili.com/5440",
+        "parent_area_id": 11,
+        "title": "华为nova Flip新生之夜",
+        "parent_area_name": "知识",
+        "area_name": "科技·科学",
+        "live_time": "0000-00-00 00:00:00",
+        "description": "<p>华为novaFlip新生之夜正在直播中！备案号：Z0910417240818001<br></p>",
+        "tags": "",
+        "attention": 17848313,
+        "online": 0,
+        "short_id": 1,
+        "uname": "哔哩哔哩直播",
+        "cover": "http://i0.hdslb.com/bfs/live/1a862058e4211a5e73a8a1bf0635953ea08a4091.jpg",
+        "background": "http://i0.hdslb.com/bfs/live/ec518ede15d4c2547c83cb59f14752450c0889b0.jpg",
+        "join_slide": 1,
+        "live_id": 0,
+        "live_id_str": "0"
+      }
+    }
+  }
+}
+```
+
+</details>
+
 ## 批量查询直播间状态
 
 > https://api.live.bilibili.com/room/v1/Room/get_status_info_by_uids
@@ -569,7 +709,7 @@ curl -G 'https://api.live.bilibili.com/live_user/v1/Master/info' \
 | room_id             | num | 直播间房间号    | 直播间实际房间号                     |
 | uid                 | num | 主播mid     |                              |
 | online              | num | 直播间在线人数   |                              |
-| live_time           | num | 直播持续时长    |                              |
+| live_time           | num | 开播时间戳，单位秒，未开播时为0    |                              |
 | live_status         | num | 直播间开播状态   | 0：未开播<br />1：正在直播<br />2：轮播中 |
 | short_id            | num | 直播间房间号    | 直播间短房间号，常见于签约主播              |
 | area                | num | 直播间分区id   |                              |
@@ -586,11 +726,11 @@ curl -G 'https://api.live.bilibili.com/live_user/v1/Master/info' \
 | keyframe            | str | 直播间关键帧url |                              |
 | lock_till           | str | 直播间封禁信息   |                              |
 | hidden_till         | str | 直播间隐藏信息   |                              |
-| broadcast_type      | num | 直播类型      | 0:普通直播<br />1：手机直播           |
+| broadcast_type      | num | 直播类型      | 0：普通直播<br />1：手机直播          |
 
 **示例：**
 
-查询用户`mid=672328094的直播间信息
+查询用户`mid=672328094`的直播间信息
 
 ```shell
 # GET方式
@@ -642,6 +782,7 @@ curl 'https://api.live.bilibili.com/room/v1/Room/get_status_info_by_uids' \
 
 </details>
 
+
 ## 清晰度代码
 
 | 代码    | 说明  |
@@ -675,6 +816,7 @@ curl 'https://api.live.bilibili.com/room/v1/Room/get_status_info_by_uids' \
 | ptype    | num | `8`   |     |                                                |
 | dolby    | num | `5`   |     |                                                |
 | panorama | num | `1`   |     |                                                |
+| only_audio | num | 是否为音频流 | 非必要 | 默认为视频流，`1` 为音频流               |
 
 **json回复：**
 
@@ -779,7 +921,7 @@ curl 'https://api.live.bilibili.com/room/v1/Room/get_status_info_by_uids' \
 
 **示例：**
 
-查询room_id=3的直播间信息
+查询`room_id=3`的直播间信息
 
 ```shell
 curl -L -X GET 'https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo?room_id=3&protocol=0,1&format=0,1,2&codec=0,1&qn=10000'
@@ -954,6 +1096,172 @@ curl -L -X GET 'https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPla
         "dolby_qn": null
       }
     }
+  }
+}
+```
+
+</details>
+
+
+
+
+
+## 获取直播间主播信息
+
+> https://api.live.bilibili.com/live_user/v1/UserInfo/get_anchor_in_room
+
+*请求方式: GET*
+
+**URL参数：**
+
+| 参数名     | 类型  | 内容   | 必要性 | 备注    |
+|---------|-----|------|-----|-------|
+| roomid | num | 直播间号 | 必要  | 可以为短号 |
+
+
+**json回复：**
+
+
+根对象：
+
+| 字段      | 类型  | 内容   | 备注              |
+|---------|-----|------|-----------------|
+| code    | num | 返回值  | 0：成功 （直播间不存在也为0） |
+| message | str | 错误信息 |                 |
+| msg     | str | 错误信息 |                 |
+| data    | obj | 信息本体 |                  |
+
+
+
+`data`对象：
+
+| 字段                      | 类型        | 内容     | 备注                          |
+|-------------------------|-----------|--------|-----------------------------|
+| info                     | obj       | 主播信息  |                     |
+| level                 | obj       | 直播等级  |                         |
+| san                | num       | 主播san值  |       12满分              |
+
+
+`info`对象:
+
+
+| 字段              | 类型 | 内容             | 备注     |
+|-------------------|------|------------------|----------|
+| uid               | num  | 主播mid          |          |
+| uname             | str  | 主播用户名          |          |
+| face              | str  | 主播头像URL      |          |
+| rank              | str  | 主播排名         |          |
+| platform_user_level | num  | 平台用户等级     |          |
+| mobile_verify     | num  | 手机验证状态     |          |
+| identification    | num  | 身份认证状态     |          |
+| official_verify   | obj  | 认证信息         |          |
+| vip_type          | num  | VIP类型          |          |
+| gender            | num  | 主播性别         |     -1：保密<br />0：女<br />1：男     |
+
+
+`info`中的`official_verify`对象:
+
+| 字段 | 类型 | 内容             | 备注     |
+|------|------|----------|-----|
+| type | num | 主播认证类型 | -1：无<br />0：个人认证<br />1：机构认证 |
+| desc | str | 主播认证信息 |                              |
+| role | num  | 未知       |       |
+
+`level`对象:
+
+
+
+| 字段         | 类型 |  内容           | 备注     |
+|--------------|------|------------------|----------|
+| uid          | num  | 用户ID           |          |
+| cost         | num  | 消费金额         |          |
+| rcost        | num  | 充值金额         |          |
+| user_score   | str  | 用户积分         |          |
+| vip          | num  | VIP状态          |          |
+| vip_time     | str  | VIP到期时间      |          |
+| svip         | num  | SVIP状态         |          |
+| svip_time    | str  | SVIP到期时间     |          |
+| update_time  | str  | 更新时间         |          |
+| master_level | obj  | 主播等级     |          |
+| user_level   | num  | 用户等级         |          |
+| color        | num  | 颜色值           |          |
+| anchor_score | num  | 主播积分        |          |
+
+
+
+`level` 中的 `master_level`对象:
+
+| 字段              | 类型 | 内容        | 备注     |
+|-------------------|------|------------------|----------|
+| level             | num  | 主播等级             |          |
+| color             | num  | 颜色值           |          |
+| current           | list | 当前积分     |          |
+| next              | list | 下一等级积分  |          |
+| anchor_score      | num  | 主播积分          |          |
+| upgrade_score     | num  | 升级积分          |          |
+| master_level_color | num  | 主播等级颜色值   |          |
+| sort              | str  | 排名             |          |
+
+
+**示例：**
+
+查询`roomid=1`的直播间主播信息
+
+```shell
+curl -G 'https://api.live.bilibili.com/live_user/v1/UserInfo/get_anchor_in_room' \
+--data-urlencode 'roomid=1'
+```
+
+<details>
+<summary>查看响应示例：</summary>
+
+```json
+{
+  "code": 0,
+  "msg": "success",
+  "message": "success",
+  "data": {
+    "info": {
+      "uid": 9617619,
+      "uname": "哔哩哔哩直播",
+      "face": "https://i0.hdslb.com/bfs/face/8f6a614a48a3813d90da7a11894ae56a59396fcd.jpg",
+      "rank": "10000",
+      "platform_user_level": 6,
+      "mobile_verify": 1,
+      "identification": 1,
+      "official_verify": {
+        "type": 1,
+        "desc": "哔哩哔哩直播官方账号",
+        "role": 3
+      },
+      "vip_type": 2,
+      "gender": -1
+    },
+    "level": {
+      "uid": 9617619,
+      "cost": 7782673656,
+      "rcost": 20199200291,
+      "user_score": "0",
+      "vip": 0,
+      "vip_time": "0000-00-00 00:00:00",
+      "svip": 0,
+      "svip_time": "0000-00-00 00:00:00",
+      "update_time": "2024-08-08 17:13:12",
+      "master_level": {
+        "level": 40,
+        "color": 16746162,
+        "current": [0, 147013810],
+        "next": [0, 147013810],
+        "anchor_score": 201992002,
+        "upgrade_score": 0,
+        "master_level_color": 16746162,
+        "sort": "\u003E10000"
+      },
+      "user_level": 60,
+      "color": 16752445,
+      "anchor_score": 201992002
+    },
+    "san": 12
   }
 }
 ```

@@ -138,13 +138,13 @@ curl 'https://api.bilibili.com/x/member/web/exp/reward' \
 
 ## 查询每日投币获得经验数
 
->https://www.bilibili.com/plus/account/exp.php
+> ~~https://www.bilibili.com/plus/account/exp.php~~ (已失效)
+>
+> https://api.bilibili.com/x/web-interface/coin/today/exp
 
 *请求方式：GET*
 
 认证方式：仅可Cookie（SESSDATA）
-
-鉴权方式：Cookie中`DedeUserID`存在且不为0
 
 该接口实时更新，未发现延迟
 
@@ -156,13 +156,13 @@ curl 'https://api.bilibili.com/x/member/web/exp/reward' \
 | ------- | ---- | -------------------- | ----------- |
 | code    | num  | 返回值               | 0：成功     |
 | message | str  | 错误信息             | 默认为0     |
-| number  | num  | 每日投币所奖励的经验 | 上限为50<br |
+| data  | num  | 每日投币所奖励的经验 | 上限为50 |
 
 **示例：**
 
 ```shell
-curl 'https://www.bilibili.com/plus/account/exp.php' \
--b 'SESSDATA=xxx;DedeUserID=1'
+curl 'https://api.bilibili.com/x/web-interface/coin/today/exp' \
+-b 'SESSDATA=xxx'
 ```
 
 <details>
@@ -172,7 +172,8 @@ curl 'https://www.bilibili.com/plus/account/exp.php' \
 {
     "code": 0,
     "message": "0",
-    "number": 20
+    "ttl": 1,
+    "data": 20
 }
 ```
 
@@ -470,7 +471,7 @@ curl 'https://api.bilibili.com/x/member/realname/apply/status' \
 
 ## 查询硬币变化情况
 
-> httpsss://api.bilibili.com/x/member/web/coin/log
+> https://api.bilibili.com/x/member/web/coin/log
 
 *请求方式：GET*
 
@@ -660,4 +661,202 @@ curl 'https://api.bilibili.com/x/member/web/sign/update' \
 
 </details>
 
+## 最近一周的经验记录
 
+> https://api.bilibili.com/x/member/web/exp/log
+
+*请求方式: GET*
+
+认证方式: Cookie (SESSDATA)
+
+**URL参数:**
+
+| 参数名 | 类型 | 内容       | 必要性 | 备注     |
+| ------ | ---- | ---------- | ------ | -------- |
+| jsonp | str | 回调函数名? | 非必要 | 默认 jsonp |
+| web_location | str | 网页位置? | 非必要 | 默认 333.33 |
+
+**JSON回复:**
+
+根对象:
+
+| 字段    | 类型 | 内容     | 备注 |
+| ------- | ---- | -------- | ---- |
+| code    | num  | 返回值   | 0: 成功<br />-101: 账号未登录 |
+| message | str  | 错误信息 | 默认为0 |
+| ttl     | num  | 1        |      |
+| data    | obj  | 数据本体 |      |
+
+`data`对象:
+
+| 字段  | 类型   | 内容             | 备注 |
+| ----- | ------ | ---------------- | ---- |
+| list  | array | 经验记录条目列表 |      |
+| count | num    | 经验记录条目数   |      |
+
+`data`中的`list`数组:
+
+| 项   | 类型 | 内容    | 备注 |
+| ---- | ---- | ----- | ---- |
+| 0    | obj  | 记录1  |      |
+| ……   | obj  | ……    | ……   |
+| n    | obj  | 记录(n+1) |      |
+
+`list`数组中的对象:
+
+| 字段   | 类型 | 内容     | 备注 |
+| ------ | ---- | -------- | ---- |
+| delta  | num  | 经验值   |      |
+| time   | str  | 记录时间 | 格式为 yyyy-MM-dd HH:mm:ss |
+| reason | str  | 记录原因 |      |
+
+**示例:**
+
+```shell
+curl -G "https://api.bilibili.com/x/member/web/exp/log" \
+-b "SESSDATA=xxx"
+```
+
+<details>
+<summary>查看响应示例:</summary>
+
+```json
+{
+  "code": 0,
+  "message": "0",
+  "ttl": 1,
+  "data": {
+    "list": [
+      {
+        "delta": 5,
+        "time": "2024-07-27 15:08:23",
+        "reason": "分享视频奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-27 08:28:21",
+        "reason": "登录奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-27 08:28:21",
+        "reason": "观看视频奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-26 12:44:19",
+        "reason": "登录奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-26 12:44:19",
+        "reason": "观看视频奖励"
+      },
+      {
+        "delta": 20,
+        "time": "2024-07-25 06:58:49",
+        "reason": "视频投币奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-25 06:58:30",
+        "reason": "观看视频奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-25 06:58:30",
+        "reason": "登录奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-23 18:47:48",
+        "reason": "观看视频奖励"
+      },
+      {
+        "delta": 5,
+        "time": "2024-07-23 18:47:48",
+        "reason": "登录奖励"
+      }
+    ],
+    "count": 10
+  }
+}
+```
+
+</details>
+
+## 最近一周的节操记录
+
+> https://api.bilibili.com/x/member/web/moral/log
+
+*请求方式: GET*
+
+认证方式: Cookie (SESSDATA)
+
+**URL参数:**
+
+| 参数名 | 类型 | 内容       | 必要性 | 备注     |
+| ------ | ---- | ---------- | ------ | -------- |
+| jsonp | str | 回调函数名? | 非必要 | 默认 jsonp |
+| web_location | str | 网页位置? | 非必要 | 默认 333.33 |
+
+**JSON回复:**
+
+根对象:
+
+| 字段    | 类型 | 内容     | 备注 |
+| ------- | ---- | -------- | ---- |
+| code    | num  | 返回值   | 0: 成功<br />-101: 账号未登录 |
+| message | str  | 错误信息 | 默认为0 |
+| ttl     | num  | 1        |      |
+| data    | obj  | 数据本体 |      |
+
+`data`对象:
+
+| 字段  | 类型   | 内容             | 备注 |
+| ----- | ------ | ---------------- | ---- |
+| moral | num    | 节操值           |      |
+| list  | array | 记录条目列表 |      |
+| count | num    | 记录条目数   |      |
+
+`data`中的`list`数组:
+
+| 项   | 类型 | 内容    | 备注 |
+| ---- | ---- | ----- | ---- |
+| 0    | obj  | 记录1  |      |
+| ……   | obj  | ……    | ……   |
+| n    | obj  | 记录(n+1) |      |
+
+`list`数组中的对象:
+
+| 字段  | 类型   | 内容             | 备注 |
+| ----- | ------ | ---------------- | ---- |
+| time | string | 时间 | |
+| delta | number | 变化 | |
+| origin | string | 原因 | |
+| reason | string | 说明 | |
+
+**示例:**
+
+```shell
+curl -G "https://api.bilibili.com/x/member/web/moral/log" \
+-b "SESSDATA=xxx"
+```
+
+<details>
+<summary>查看响应示例:</summary>
+
+```json
+{
+  "code": 0,
+  "message": "0",
+  "ttl": 1,
+  "data": {
+    "moral": 70,
+    "list": [],
+    "count": 0
+  }
+}
+```
+
+</details>
